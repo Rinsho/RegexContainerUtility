@@ -20,10 +20,9 @@ namespace RegularExpression.Utility.Data
         private void AssignElementProcessor()
         {
             Type elementType = typeof(TElement);
-            TypeInfo elementTypeInfo = elementType.GetTypeInfo();
-            if (elementTypeInfo.IsDefined(typeof(RegexContainerAttribute)))
+            if (elementType.GetTypeInfo().IsDefined(typeof(RegexContainerAttribute)))
             {
-                Type containerType = typeof(RegexContainerProcessor<>).MakeGenericType(typeof(TElement));
+                Type containerType = typeof(RegexContainerProcessor<>).MakeGenericType(elementType);
                 _elementProcessor = (IDataProcessor)Activator.CreateInstance(containerType);
             }
             else

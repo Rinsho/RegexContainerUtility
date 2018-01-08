@@ -139,10 +139,9 @@ namespace RegexAttributeUtility.Test
             ContainerResultCollection<UserInfo> results = container.ParseAll(userInfoData);
             Assert.Multiple(() =>
             {
-                foreach (ContainerResult<UserInfo> result in results)
+                foreach (UserInfo result in results)
                 {
-                    Assert.That(result.Success, Is.True);
-                    Assert.That(result.Value.LastName, Is.EqualTo("Doe"));
+                    Assert.That(result.LastName, Is.EqualTo("Doe"));
                 }
             });
         }

@@ -3,20 +3,20 @@ using System.Collections.Generic;
 
 namespace RegularExpression.Utility
 {
-    public class ContainerResultCollection<T> : IEnumerable<ContainerResult<T>>
+    public class ContainerResultCollection<T> : IEnumerable<T>
     {
-        private IList<ContainerResult<T>> _regexResults;
+        private IList<T> _regexResults;
 
         public int Count =>
             _regexResults.Count;
 
-        public ContainerResultCollection(IList<ContainerResult<T>> results) =>
+        public ContainerResultCollection(IList<T> results) =>
             _regexResults = results;
 
-        public ContainerResult<T> this[int index] =>
+        public T this[int index] =>
             _regexResults[index];
 
-        public IEnumerator<ContainerResult<T>> GetEnumerator() =>
+        public IEnumerator<T> GetEnumerator() =>
             _regexResults.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() =>

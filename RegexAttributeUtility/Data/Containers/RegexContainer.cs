@@ -69,14 +69,14 @@ namespace RegularExpression.Utility
 
         private ContainerResultCollection<T> CreateContainers(MatchCollection matches)
         {
-            List<ContainerResult<T>> containers = new List<ContainerResult<T>>();
+            List<T> containers = new List<T>();
             if (matches.Count > 0)
             {
                 foreach (Match match in matches)
                 {
                     ContainerResult<T> container = CreateContainer(match);
                     if (container.Success)
-                        containers.Add(container);
+                        containers.Add(container.Value);
                 }
             }
             return new ContainerResultCollection<T>(containers);
