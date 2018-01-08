@@ -7,10 +7,10 @@ namespace RegularExpression.Utility
         public bool Success { get; }
         public T Value { get; }
 
-        public ContainerResult(T container, bool success)
+        public ContainerResult(object container, bool success)
         {
             Success = success;
-            Value = container;
+            Value = (T)container;
         }
     }
 }

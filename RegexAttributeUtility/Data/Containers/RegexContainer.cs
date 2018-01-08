@@ -6,7 +6,7 @@ using RegularExpression.Utility.Data;
 
 namespace RegularExpression.Utility
 {
-    public partial class RegexContainer<T> where T: new()
+    public class RegexContainer<T> where T: new()
     {
         private static Regex _expression;
         private static List<DataContainer> _dataMembers;
@@ -47,13 +47,10 @@ namespace RegularExpression.Utility
                 }
             }
         }
-    }
 
-    public partial class RegexContainer<T> where T: new()
-    {
         private ContainerResult<T> CreateContainer(Match match)
         {
-            T container = new T();
+            object container = new T();
             bool success = match.Success;
             if (success)
             {
@@ -92,8 +89,8 @@ namespace RegularExpression.Utility
         }
 
         public ContainerResultCollection<T> ParseAll(string text)
-        {  
-            MatchCollection matches = _expression.Matches(text);           
+        {
+            MatchCollection matches = _expression.Matches(text);
             return CreateContainers(matches);
         }
     }

@@ -35,7 +35,7 @@ namespace RegularExpression.Utility.Data
                 RegexDataListAttribute listData = member.GetCustomAttribute<RegexDataListAttribute>();
                 Type elementType = dataType.GetElementType() ?? dataType.GetTypeInfo().GetGenericArguments()[0];
                 Type listProcessorType = typeof(DataListProcessor<,>).MakeGenericType(dataType, elementType);
-                _dataProcessor = (IDataProcessor)Activator.CreateInstance(listProcessorType, listData.Delimiter);
+                _dataProcessor = (IDataProcessor)Activator.CreateInstance(listProcessorType, listData.Delimiter, listData.TrimWhitespace);
             }
             else if (dataType.GetTypeInfo().IsDefined(typeof(RegexContainerAttribute)))
             {
