@@ -4,8 +4,11 @@ using System.Text.RegularExpressions;
 using System.Reflection;
 using RegularExpression.Utility.Data;
 
+[assembly: CLSCompliant(true)]
+
 namespace RegularExpression.Utility
 {
+    [CLSCompliant(true)]
     public class RegexContainer<T> where T: new()
     {
         private static Regex _expression;

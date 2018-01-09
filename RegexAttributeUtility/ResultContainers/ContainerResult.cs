@@ -2,6 +2,7 @@
 
 namespace RegularExpression.Utility
 {
+    [CLSCompliant(true)]
     public class ContainerResult<T>
     {
         public bool Success { get; }

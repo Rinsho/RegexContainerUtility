@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace RegularExpression.Utility
 {
+    [CLSCompliant(true)]
     public class ContainerResultCollection<T> : IEnumerable<T>
     {
         private IList<T> _regexResults;

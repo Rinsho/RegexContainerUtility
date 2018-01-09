@@ -2,6 +2,7 @@
 
 namespace RegularExpression.Utility
 {
+    [CLSCompliant(true)]
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class RegexDataListAttribute : Attribute
     {

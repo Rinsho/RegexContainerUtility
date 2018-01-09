@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace RegularExpression.Utility
 {
+    [CLSCompliant(true)]
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = false, Inherited = true)]
     public sealed class RegexContainerAttribute : Attribute
     {
