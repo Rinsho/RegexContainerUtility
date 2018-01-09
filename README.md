@@ -1,4 +1,3 @@
-# README STILL UNDER CONSTRUCTION
 # RegexAttributeUtility
 Attribute utility for parsing and storing regular expression results into a user-defined container.
 
@@ -73,3 +72,9 @@ Any field is a valid field for this attribute. The only restriction on propertie
 This attribute has one required parameter which specifies the delimiter used to split the group match. An optional parameter `TrimWhitespace` allows you to turn on or off trimming of leading and trailing whitespace (default: `true`). This trimming occurs after the split on the delimiter and before the value is further processed (added to the collection, passed to a subcontainer, etc).
 ### RegexContainer\<T\>
 If a match is not made to the container's regular expression, a `ContainerResult<T>` with the `Success` property set to `false` will be returned. Optional groups will not cause a failed match and the related field or property will not be set (even to a default). When using the `ParseAll` method, the `ContainerResultCollection<T>` will contain only successful `ContainerResult<T>` matches. A `ContainerResult<T>` will also be unsuccessful if a field or property set type mismatch occurs such as attempting to set `abc123` to an `int`. If a field or property is itself a container, a failed match in the sub-container will cause the root container to be unsuccessful as well so carefully choose which groups are not optional (optional ex. `(?<group>.+)?`, non-optional ex. `(?<group>.+)`).
+
+`RegexContainer<T>` caches the reflected type structure statically. Per `T`, future calls to the instance constructor or methods do not incur the reflection overhead.
+## Debugging
+Debugging should be fairly straightforward. The only general error you should see is a `TypeInitialization` exception. This indicates the container is not configured correctly. Either a list type is used that does not implement `ICollection<T>` or its derivatives, or a non-list type that does not have a `public` parameterless constructor is used.
+
+Casting errors such as a type that cannot be converted from `System.String` will be caught and the container's `Success` property will be set to `false`. The specific errors caught are `FormatException` and `InvalidCastException` from the `Convert.ChangeType` call. An internal exception is also caught which indicates an invalid match to a sub-container as explained in the `RegexContainer<T>` section.
