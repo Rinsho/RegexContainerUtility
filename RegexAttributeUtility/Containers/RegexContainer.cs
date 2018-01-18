@@ -62,7 +62,11 @@ namespace RegularExpression.Utility
                     foreach (DataContainer member in _dataMembers)
                         member.ProcessMatch(container, match);
                 }
-                catch (Exception ex) when (ex is InvalidRegexDataException || ex is InvalidCastException || ex is FormatException)
+                catch (Exception ex) when (
+                    ex is InvalidRegexDataException || 
+                    ex is InvalidCastException || 
+                    ex is FormatException ||
+                    ex is OverflowException)
                 {
                     success = false;
                 }
