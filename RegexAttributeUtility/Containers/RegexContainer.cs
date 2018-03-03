@@ -17,8 +17,20 @@ namespace RegularExpression.Utility
         static RegexContainer()
         {
             _dataMembers = new List<DataContainer>();
+            LoadMetadata();
+        }
+
+        public static void LoadMetadata()
+        {
+            ClearMetadata();
             TypeInfo containerTypeInfo = typeof(T).GetTypeInfo();
             ExtractContainerMetadata(containerTypeInfo);
+        }
+
+        public static void ClearMetadata()
+        {
+            _expression = null;
+            _dataMembers.Clear();
         }
 
         private static void ExtractContainerMetadata(TypeInfo containerTypeInfo)

@@ -114,6 +114,13 @@ namespace RegexAttributeUtility.Test
             public TestEnum Value;
         }
 
+        [RegexContainer(@"(?<X>.+)")]
+        class MetadataTest
+        {
+            [RegexData]
+            public int X;
+        }
+
         [Test]
         public void RegexContainer_ValidContainer_Created()
         {
@@ -240,6 +247,17 @@ namespace RegexAttributeUtility.Test
             RegexContainer<EnumTest> container = new RegexContainer<EnumTest>();
             ContainerResult<EnumTest> result = container.Parse(val);
             Assert.That(result.Success, Is.False);
+        }
+
+        [Test]
+        public void RegexContainer_ReloadMetadata_ValidMetadataLoaded()
+        {
+            string val = "1";
+            RegexContainer<MetadataTest> container = new RegexContainer<MetadataTest>();
+            RegexContainer<MetadataTest>.ClearMetadata();
+            RegexContainer<MetadataTest>.LoadMetadata();
+            ContainerResult<MetadataTest> result = container.Parse(val);
+            Assert.That(result.Value.X, Is.EqualTo(1));
         }
     }
 }
