@@ -9,7 +9,7 @@
     <Company />
     <Authors>Jon McKee</Authors>
     <Copyright>2018</Copyright>
-    <AssemblyName>regexattrutil</AssemblyName>
+    <AssemblyName>regexcontainerutil</AssemblyName>
   </PropertyGroup>
 
 </Project>
