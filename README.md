@@ -1,4 +1,4 @@
-# RegexAttributeUtility
+# RegexContainerUtility
 Attribute utility for parsing and storing regular expression results into a user-defined container.
 
 ## Usage

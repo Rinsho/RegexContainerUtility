@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RegexAttributeUtility\RegexAttributeUtility.csproj" />
+    <ProjectReference Include="..\RegexContainerUtility\RegexContainerUtility.csproj" />
   </ItemGroup>
 
 </Project>

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace RegularExpression.Utility
 {
     [CLSCompliant(true)]
-    public class ContainerResultCollection<T> : IEnumerable<T>
+    public class ContainerResultCollection<T> : IReadOnlyList<T>
     {
         private IList<T> _regexResults;
 

@@ -17,8 +17,20 @@ namespace RegularExpression.Utility
         static RegexContainer()
         {
             _dataMembers = new List<DataContainer>();
+            LoadMetadata();
+        }
+
+        public static void LoadMetadata()
+        {
+            ClearMetadata();
             TypeInfo containerTypeInfo = typeof(T).GetTypeInfo();
             ExtractContainerMetadata(containerTypeInfo);
+        }
+
+        public static void ClearMetadata()
+        {
+            _expression = null;
+            _dataMembers.Clear();
         }
 
         private static void ExtractContainerMetadata(TypeInfo containerTypeInfo)
@@ -62,7 +74,11 @@ namespace RegularExpression.Utility
                     foreach (DataContainer member in _dataMembers)
                         member.ProcessMatch(container, match);
                 }
-                catch (Exception ex) when (ex is InvalidRegexDataException || ex is InvalidCastException || ex is FormatException)
+                catch (Exception ex) when (
+                    ex is InvalidRegexDataException || 
+                    ex is InvalidCastException || 
+                    ex is FormatException ||
+                    ex is OverflowException)
                 {
                     success = false;
                 }

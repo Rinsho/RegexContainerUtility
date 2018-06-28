@@ -105,6 +105,22 @@ namespace RegexAttributeUtility.Test
             public int Test;
         }
 
+        enum TestEnum { Test1 = 0, Test2 = 1 }
+
+        [RegexContainer(@"(?<Value>.+)")]
+        class EnumTest
+        {
+            [RegexData]
+            public TestEnum Value;
+        }
+
+        [RegexContainer(@"(?<X>.+)")]
+        class MetadataTest
+        {
+            [RegexData]
+            public int X;
+        }
+
         [Test]
         public void RegexContainer_ValidContainer_Created()
         {
@@ -205,5 +221,43 @@ namespace RegexAttributeUtility.Test
             }
             Assert.Fail();
         }        
+
+        [Test]
+        public void RegexContainer_ValidEnumName_ContainerCreated()
+        {
+            string name = "Test1";
+            RegexContainer<EnumTest> container = new RegexContainer<EnumTest>();
+            ContainerResult<EnumTest> result = container.Parse(name);
+            Assert.That(result.Value.Value, Is.EqualTo(TestEnum.Test1));
+        }
+
+        [Test]
+        public void RegexContainer_ValidEnumValue_ContainerCreated()
+        {
+            string val = "1";
+            RegexContainer<EnumTest> container = new RegexContainer<EnumTest>();
+            ContainerResult<EnumTest> result = container.Parse(val);
+            Assert.That(result.Value.Value, Is.EqualTo(TestEnum.Test2));
+        }
+
+        [Test]
+        public void RegexContainer_InvalidEnumValue_InvalidContainerReturned()
+        {
+            string val = "2";
+            RegexContainer<EnumTest> container = new RegexContainer<EnumTest>();
+            ContainerResult<EnumTest> result = container.Parse(val);
+            Assert.That(result.Success, Is.False);
+        }
+
+        [Test]
+        public void RegexContainer_ReloadMetadata_ValidMetadataLoaded()
+        {
+            string val = "1";
+            RegexContainer<MetadataTest> container = new RegexContainer<MetadataTest>();
+            RegexContainer<MetadataTest>.ClearMetadata();
+            RegexContainer<MetadataTest>.LoadMetadata();
+            ContainerResult<MetadataTest> result = container.Parse(val);
+            Assert.That(result.Value.X, Is.EqualTo(1));
+        }
     }
 }

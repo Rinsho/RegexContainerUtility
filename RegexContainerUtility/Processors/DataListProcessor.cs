@@ -9,6 +9,7 @@ namespace RegularExpression.Utility.Data
         private char _delimiter;
         private bool _trimWhitespace;
         private IDataProcessor _elementProcessor;
+        private Type _listType = typeof(TList);
 
         public DataListProcessor(char delimiter, bool trimWhitespace)
         {
@@ -29,7 +30,7 @@ namespace RegularExpression.Utility.Data
                 _elementProcessor = new DataTypeProcessor(elementType);
         }
 
-        private TElement[] ProcessArrayType(string[] dataList)
+        private ICollection<TElement> ProcessArrayType(string[] dataList)
         {
             TElement[] collection = new TElement[dataList.Length];
             for (int i = 0; i < dataList.Length; i++)
@@ -40,9 +41,9 @@ namespace RegularExpression.Utility.Data
             return collection;
         }
 
-        private TList ProcessCollectionType(string[] dataList)
+        private ICollection<TElement> ProcessCollectionType(string[] dataList)
         {
-            TList collection = (TList)Activator.CreateInstance(typeof(TList));
+            TList collection = Activator.CreateInstance<TList>();
             foreach (string item in dataList)
             {
                 string tempItem = _trimWhitespace ? item.Trim() : item;
@@ -54,11 +55,9 @@ namespace RegularExpression.Utility.Data
         public object Process(string data)
         {
             string[] dataList = data.Split(_delimiter);
-            ICollection<TElement> processedList;
-            if (typeof(TList).IsArray)
-                processedList = ProcessArrayType(dataList);
-            else
-                processedList = ProcessCollectionType(dataList);
+            ICollection<TElement> processedList = _listType.IsArray ?
+                ProcessArrayType(dataList) :
+                ProcessCollectionType(dataList);
             return processedList;
         }
     }
