@@ -4,10 +4,10 @@ using System.Text.RegularExpressions;
 
 namespace RegularExpression.Utility.Data
 {
-    internal class DataContainer
+    internal class DataContainer<TContainer>
     {       
         private string _matchID;        
-        private IDataAccessor _dataAccessor;
+        private IDataAccessor<TContainer> _dataAccessor;
         private IDataProcessor _dataProcessor;
 
         private DataContainer(MemberInfo member, Type dataType)
@@ -17,10 +17,10 @@ namespace RegularExpression.Utility.Data
         }
 
         public DataContainer(PropertyInfo property) : this(property, property.PropertyType) =>
-            _dataAccessor = new PropertyInfoWrapper(property);
+            _dataAccessor = new PropertyInfoWrapper<TContainer>(property);
 
         public DataContainer(FieldInfo field) : this(field, field.FieldType) =>
-            _dataAccessor = new FieldInfoWrapper(field);           
+            _dataAccessor = new FieldInfoWrapper<TContainer>(field);           
 
         private void SetMatchID(MemberInfo member)
         {
@@ -46,7 +46,7 @@ namespace RegularExpression.Utility.Data
                 _dataProcessor = new DataTypeProcessor(dataType);
         }
 
-        public void ProcessMatch(object container, Match match)
+        public void ProcessMatch(in TContainer container, Match match)
         {
             Group result = match.Groups[_matchID];
             if (result.Success)

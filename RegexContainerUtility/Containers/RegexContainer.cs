@@ -12,11 +12,11 @@ namespace RegularExpression.Utility
     public class RegexContainer<T> where T: new()
     {
         private static Regex _expression;
-        private static List<DataContainer> _dataMembers;
+        private static List<DataContainer<T>> _dataMembers;
 
         static RegexContainer()
         {
-            _dataMembers = new List<DataContainer>();
+            _dataMembers = new List<DataContainer<T>>();
             LoadMetadata();
         }
 
@@ -46,7 +46,7 @@ namespace RegularExpression.Utility
             IEnumerable<FieldInfo> fields = containerTypeInfo.GetFields(BindingFlags.Instance | BindingFlags.Public);
             foreach (FieldInfo field in fields)
                 if (field.IsDefined(typeof(RegexDataAttribute)))
-                    _dataMembers.Add(new DataContainer(field));
+                    _dataMembers.Add(new DataContainer<T>(field));
         }
 
         private static void ExtractProperties(TypeInfo containerTypeInfo)
@@ -58,20 +58,20 @@ namespace RegularExpression.Utility
                 {
                     if (!property.CanWrite)
                         throw new InvalidRegexDataException($"Property { property.Name } on type { typeof(T) } is not writeable.");
-                    _dataMembers.Add(new DataContainer(property));
+                    _dataMembers.Add(new DataContainer<T>(property));
                 }
             }
         }
 
         private ContainerResult<T> CreateContainer(Match match)
         {
-            object container = new T();
+            T container = new T();
             bool success = match.Success;
             if (success)
             {
                 try
                 {
-                    foreach (DataContainer member in _dataMembers)
+                    foreach (DataContainer<T> member in _dataMembers)
                         member.ProcessMatch(container, match);
                 }
                 catch (Exception ex) when (

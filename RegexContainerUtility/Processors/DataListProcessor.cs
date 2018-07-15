@@ -9,7 +9,6 @@ namespace RegularExpression.Utility.Data
         private char _delimiter;
         private bool _trimWhitespace;
         private IDataProcessor _elementProcessor;
-        private Type _listType = typeof(TList);
 
         public DataListProcessor(char delimiter, bool trimWhitespace)
         {
@@ -55,7 +54,7 @@ namespace RegularExpression.Utility.Data
         public object Process(string data)
         {
             string[] dataList = data.Split(_delimiter);
-            ICollection<TElement> processedList = _listType.IsArray ?
+            ICollection<TElement> processedList = typeof(TList).IsArray ?
                 ProcessArrayType(dataList) :
                 ProcessCollectionType(dataList);
             return processedList;
