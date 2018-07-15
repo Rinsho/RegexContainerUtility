@@ -2,8 +2,8 @@
 
 namespace RegularExpression.Utility.Data
 {
-    internal interface IDataAccessor
+    internal interface IDataAccessor<T>
     {
-        void SetValue(object container, object value);
+        void SetValue(in T container, object value);
     }
 }

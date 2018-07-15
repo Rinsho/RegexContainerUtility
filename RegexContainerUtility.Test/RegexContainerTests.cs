@@ -1,4 +1,11 @@
-﻿using System;
+﻿
+#if DEBUG
+#define BENCHMARK
+#else
+#undef BENCHMARK
+#endif
+
+using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using RegularExpression.Utility;
@@ -6,6 +13,62 @@ using System.Text.RegularExpressions;
 
 namespace RegexAttributeUtility.Test
 {
+#if BENCHMARK
+    [TestFixture]
+    public class PerformanceTests
+    {
+        [RegexContainer(@"^(?<Points>.+)$")]
+        class Triangle
+        {
+            [RegexData]
+            [RegexDataList(' ')]
+            public Point[] Points { get; set; }
+        }
+
+        [RegexContainer(@"(?<X>\d+),(?<Y>\d+)")]
+        struct Point
+        {
+            [RegexData]
+            public int X { get; set; }
+            [RegexData]
+            public int Y { get; set; }
+        }
+
+        private List<string> CreateTriangles(int amount)
+        {
+            Random random = new Random();
+            List<string> triangles = new List<string>(amount);
+            for (int i = 0; i < amount; i++)
+            {
+                string triangle = string.Empty;
+                for (int j = 0; j < 3; j++)
+                    triangle += $"{random.Next(0, 100)},{random.Next(0, 100)} ";
+                triangles.Add(triangle.TrimEnd());
+            }
+            return triangles;
+        }
+
+        [Test]
+        [Repeat(10)]
+        [TestCase(100000)]
+        public void RegexContainer_BulkCreation(int amount)
+        {
+            RegexContainer<Triangle> container = new RegexContainer<Triangle>();
+            List<string> triangles = CreateTriangles(amount);
+
+            bool overallSuccess = true;
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();           
+            sw.Start();
+            foreach (string triangle in triangles)
+                if (!container.Parse(triangle).Success)
+                    overallSuccess = false;
+            sw.Stop();
+            Console.WriteLine($"Elapsed Ms: {sw.ElapsedMilliseconds}");
+            Assert.That(overallSuccess, Is.True);
+        }
+    }
+#endif
+
     [TestFixture]
     public class RegexContainerTests
     {       
@@ -47,7 +110,7 @@ namespace RegexAttributeUtility.Test
         }
 
         [RegexContainer(@"(?<FirstName>[A-Za-z]+) (?<LastName>[A-Za-z]+), ?(?<Addr>[^\r\n]+)\r?$", Options = RegexOptions.Multiline)]
-        class UserInfo
+        struct UserInfo
         {
             [RegexData]
             public string FirstName { get; private set; }
