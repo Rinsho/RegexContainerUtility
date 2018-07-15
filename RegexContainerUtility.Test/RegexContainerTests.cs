@@ -1,7 +1,6 @@
 ﻿
-#if DEBUG
 #define BENCHMARK
-#else
+#if DEBUG
 #undef BENCHMARK
 #endif
 
