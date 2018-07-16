@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Reflection;
+using System.Linq.Expressions;
 using RegularExpression.Utility.Data;
 
 [assembly: CLSCompliant(true)]
@@ -11,12 +12,14 @@ namespace RegularExpression.Utility
     [CLSCompliant(true)]
     public class RegexContainer<T> where T: new()
     {
+        private static readonly Func<T> CreateContainerInstance;
         private static Regex _expression;
-        private static List<DataContainer<T>> _dataMembers;
-
+        private static HashSet<DataContainer<T>> _dataMembers;
+        
         static RegexContainer()
         {
-            _dataMembers = new List<DataContainer<T>>();
+            _dataMembers = new HashSet<DataContainer<T>>();
+            CreateContainerInstance = Expression.Lambda<Func<T>>(Expression.New(typeof(T))).Compile();
             LoadMetadata();
         }
 
@@ -65,7 +68,7 @@ namespace RegularExpression.Utility
 
         private ContainerResult<T> CreateContainer(Match match)
         {
-            T container = new T();
+            T container = CreateContainerInstance();
             bool success = match.Success;
             if (success)
             {
