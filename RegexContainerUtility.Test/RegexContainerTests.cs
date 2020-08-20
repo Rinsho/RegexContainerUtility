@@ -33,18 +33,18 @@ namespace RegexAttributeUtility.Test
             public int Y { get; set; }
         }
 
-        private List<string> CreateTriangles(int amount)
+        private List<string> CreatePointGroups(int groupCount, int pointsPerGroup)
         {
             Random random = new Random();
-            List<string> triangles = new List<string>(amount);
-            for (int i = 0; i < amount; i++)
+            List<string> pointGroups = new List<string>(groupCount);
+            for (int i = 0; i < groupCount; i++)
             {
-                string triangle = string.Empty;
-                for (int j = 0; j < 3; j++)
-                    triangle += $"{random.Next(0, 100)},{random.Next(0, 100)} ";
-                triangles.Add(triangle.TrimEnd());
+                string group = string.Empty;
+                for (int j = 0; j < pointsPerGroup; j++)
+                    group += $"{random.Next(0, 100)},{random.Next(0, 100)} ";
+                pointGroups.Add(group.TrimEnd());
             }
-            return triangles;
+            return pointGroups;
         }
 
         [Test]
@@ -53,7 +53,7 @@ namespace RegexAttributeUtility.Test
         public void RegexContainer_BulkCreation(int amount)
         {
             RegexContainer<Triangle> container = new RegexContainer<Triangle>();
-            List<string> triangles = CreateTriangles(amount);
+            List<string> triangles = CreatePointGroups(amount, 3);
 
             bool overallSuccess = true;
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();           
