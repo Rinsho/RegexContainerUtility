@@ -1,5 +1,5 @@
 # RegexContainerUtility
-Attribute utility for parsing and storing regular expression results into a user-defined container.
+Attribute utility for parsing and storing regular expression results into a user-defined container. Developed as a proof-of-concept for a much more ambitious project. As such it isn't being actively supported.
 
 ## Usage
 The following classes are in the `RegularExpression.Utility` namespace.
